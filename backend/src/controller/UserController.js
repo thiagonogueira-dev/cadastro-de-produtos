@@ -1,6 +1,7 @@
 const { UniqueConstraintError } = require('sequelize')
 
 const User = require('../models/User');
+const Product = require('../models/Product');
 
 
 module.exports = {
@@ -8,10 +9,13 @@ module.exports = {
         try {
             const { username, password } = req.body;
 
-            const user = await User.create({ username, password });
+            const user = await User.create({ username, password }, { returning: ['id', 'username', 'created_at'] });
+            user.password = undefined;
+
             res.status(201).json({
                 user
             });
+
         } catch (error) {
             if(error instanceof UniqueConstraintError) {
                 return res.status(409).json({
@@ -50,16 +54,23 @@ module.exports = {
 
     async listUsers(req, res) {
         try {
-            const users = await User.findAll({ order: [['id', 'ASC']] });
-            if (!users) {
-                return res.status(200).json({
-                    message: 'Não existem usuários cadastrados'
-                });
-            }
+            // const users = await User.findAll({ order: [['id', 'ASC']] });
+            // if (!users) {
+            //     return res.status(200).json({
+            //         message: 'Não existem usuários cadastrados'
+            //     });
+            // }
 
-            res.status(200).json({
-                users
-            });
+            // res.status(200).json({
+            //     users
+            // });
+
+            Product.create({
+                name: 'p1',
+                price: 198.12,
+                user_id: 1
+            })
+
         } catch (error) {
             res.status(400).json({
                 error
