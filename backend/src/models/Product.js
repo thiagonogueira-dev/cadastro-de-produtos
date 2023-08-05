@@ -9,7 +9,7 @@ class Product extends Model {
             user_id: DataTypes.INTEGER
         }, {
             sequelize,
-            underscored: true
+            underscored: true,
         })
     }
 

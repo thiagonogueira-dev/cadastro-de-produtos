@@ -7,13 +7,14 @@ module.exports =
     "password": process.env.DB_PSW,
     "database": process.env.DB_NAME,
     "host": process.env.DB_HOST,
+    "timezone": "America/Sao_Paulo",
     "dialect": process.env.DB_DIALECT,
     "dialectOptions": {
       "ssl": {
-          "require": true,
-          "rejectUnauthorized": false
+        "require": true,
+        "rejectUnauthorized": false
       },
-      "useUTC": false
+      "useUTC": false,
     },
     "define": {
       "underscored": true

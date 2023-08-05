@@ -1,25 +1,20 @@
 const { Sequelize } = require('sequelize');
-const configDB = require('../config/config');
-const config = configDB[process.env.NODE_ENV]
+const config = require('../config/config');
+const configDB = config[process.env.NODE_ENV]
 
 const User = require('../models/User');
 const Product = require('../models/Product');
+const BlackList = require('../models/BlackList');
 
-const connection = new Sequelize({ 
-    ...config,
-    timezone: '-3:00',
-    dialectOptions: {
-        ssl: {
-            "require": true,
-            "rejectUnauthorized": false
-        },
-        useUTC: false
-    }
-})
+require('../controller/BlackListController');
 
-connection.sync();
+const connection = new Sequelize(configDB)
+
+// connection.sync();
 User.init(connection);
 Product.init(connection);
+BlackList.init(connection);
+
 User.associate(connection.models);
 Product.associate(connection.models);
 
